@@ -2,7 +2,7 @@
 Collection of tests to verify presets parsing correctness
 '''
 
-from nose.tools import eq_, raises
+from nose.tools import eq_, raises, assert_raises
 from presets.presetManager import Preset
 from presets.presetManager import PresetMissingFieldException
 from presets.presetManager import PresetFieldTypeException
@@ -26,14 +26,15 @@ def test_field_id_missing():
     p = Preset(preset)
 
 
-@raises(PresetException)
 def test_field_id_empty():
     ''' id is not optional'''
     preset = {
         "id": "",
         "properties": []
     }
-    p = Preset(preset)
+    with assert_raises(PresetException) as cm:
+        p = Preset(preset)
+    eq_(str(cm.exception), "field 'id' could not be empty")
 
 
 @raises(PresetFieldTypeException)
@@ -169,7 +170,7 @@ def test_properties_defaults():
 
 @raises(PresetException)
 def test_properties_type():
-    ''' test type value not valid '''   
+    '''test type value not valid'''
     preset = {
         "id" : "id_test",
         "properties": [{ "id": "prop_test",
@@ -189,7 +190,6 @@ def test_properties_type_enum_missing_values():
     p = Preset(preset)
 
 
-@raises(PresetFieldTypeException)
 def test_properties_type_enum_values_type():
     preset = {
         "id": "id_test",
@@ -198,7 +198,22 @@ def test_properties_type_enum_values_type():
                          "values": "errorrrre"
                         }]
     }
-    p = Preset(preset)
+    with assert_raises(PresetFieldTypeException) as cm:
+        Preset(preset)
+    assert 'must be of type list' in cm.exception.message
+
+
+def test_properties_type_enum_values_nonstring():
+    preset = {
+        "id": "id_test",
+        "properties": [{"id": "prop_test",
+                        "type": "enum",
+                        "values": range(3)
+                        }]
+    }
+    with assert_raises(PresetFieldTypeException) as cm:
+        Preset(preset)
+    assert 'must be a list of str' in cm.exception.message
 
 
 def test_properties_type_enum_values():
