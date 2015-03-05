@@ -2,7 +2,7 @@
 Collection of tests to verify presets validation
 '''
 
-from nose.tools import eq_, raises
+from nose.tools import eq_, raises, assert_raises
 from presets.presetManager import Preset
 from presets.presetManager import PresetMissingFieldException
 from presets.presetManager import PresetFieldTypeException
@@ -43,6 +43,22 @@ def test_validate_string_not_required():
     data = { "prop_test_string" : "any_text_I_want" }
     p = Preset(preset)
     p.validate(data)
+
+
+def test_validate_string_not_required_nonstring():
+    ''' if string property is not required we cannot pass a non-string'''
+    preset = {
+        "id": "id_test",
+        "properties": [ { "id": "prop_test_string",
+                          "required": False,
+                          "type" : "string" } ]
+    }
+    data = {'prop_test_string': 42}
+    p = Preset(preset)
+    with assert_raises(PresetFieldTypeException) as cm:
+        p.validate(data)
+    assert 'must be of type str' in cm.exception.message
+
 
 @raises(PresetMissingFieldException)
 def test_validate_string_required_missing():
@@ -134,3 +150,20 @@ def test_validate_enum_required_wrong():
     data = {"prop_test_enum": "alsdkasld"}
     p = Preset(preset)
     p.validate(data)
+
+
+def test_validate_enum_must_be_str():
+    '''if property of type enum is required the value must be a string
+    '''
+    preset = {
+        "id": "id_test",
+        "properties": [ { "id": "prop_test_enum",
+                          "required": True,
+                          "type" : "enum",
+                          "values": ['alfa','beta','gamma'] } ]
+    }
+    data = {"prop_test_enum": 42}
+    p = Preset(preset)
+    with assert_raises(PresetFieldTypeException) as cm:
+        p.validate(data)
+    assert 'must be of type str' in cm.exception.message

@@ -2,7 +2,7 @@
 Collection of tests to verify preset paths loading
 '''
 
-from nose.tools import raises, eq_
+from nose.tools import raises, eq_, assert_raises
 from tempfile import NamedTemporaryFile, mkdtemp
 from shutil import rmtree
 from presets.presetManager import PresetException
@@ -83,10 +83,25 @@ def test_folders():
         assert presetBodies[i]['id'] in p.presets
         rmtree(folders[i], ignore_errors=True)
 
-@raises(PresetException)
+
 def test_wrong_json_format():
     ''' if preset has a bad json format we expect an exception'''
     f = NamedTemporaryFile(delete=False)
     f.write("{{{{}")
     f.close()
-    p = PresetManager(f.name, strict=True)
+    with assert_raises(PresetException) as cm:
+        PresetManager(f.name, strict=True)
+    exc = cm.exception
+    assert exc.message.startswith('Failed to load')
+    assert 'JSON decoding' in exc.message
+
+
+def test_valid_json_bad_preset():
+    f = NamedTemporaryFile(delete=False)
+    f.write(json.dumps({}))
+    f.close()
+    with assert_raises(PresetException) as cm:
+        PresetManager(f.name, strict=True)
+    exc = cm.exception
+    assert exc.message.startswith('Failed to load')
+    assert 'Bad format' in exc.message
