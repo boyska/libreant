@@ -32,17 +32,24 @@ class LibreantCoreApp(Flask):
         defaults.update(conf)
         self.config.update(defaults)
         self._db = None
-        if not self.config['FSDB_PATH']:
-            if not self.config['DEBUG']:
-                raise ValueError('FSDB_PATH cannot be empty')
-            else:
-                fsdbPath = os.path.join(tempfile.gettempdir(), 'libreant_fsdb')
-                self.fsdb = Fsdb(fsdbPath)
-        else:
-            self.fsdb = Fsdb(self.config['FSDB_PATH'])
+        self._fsdb = None
         self.presetManager = PresetManager(self.config['PRESET_PATHS'])
 
-    def get_db(self):
+    @property
+    def fsdb(self):
+        if self._fsdb is None:
+            if not self.config['FSDB_PATH']:
+                if not self.config['DEBUG']:
+                    raise ValueError('FSDB_PATH cannot be empty')
+                else:
+                    fsdbPath = os.path.join(tempfile.gettempdir(), 'libreant_fsdb')
+                    self._fsdb = Fsdb(fsdbPath)
+            else:
+                self._fsdb = Fsdb(self.config['FSDB_PATH'])
+        return self._fsdb
+
+    @property
+    def db(self):
         if self._db is None:
             db = DB(Elasticsearch(hosts=self.config['ES_HOSTS']),
                     index_name=self.config['ES_INDEXNAME'])
@@ -98,7 +105,7 @@ def create_app():
         query = request.args.get('q', None)
         if query is None:
             abort(400, "No query given")
-        res = app.get_db().user_search(query)['hits']['hits']
+        res = app.db.user_search(query)['hits']['hits']
         books = []
         for b in res:
             src = b['_source']
@@ -162,7 +169,7 @@ def create_app():
         if len(files) > 0:
             body['_files'] = files
 
-        addedItem = app.get_db().add_book(doc_type="book", body=body)
+        addedItem = app.db.add_book(doc_type="book", body=body)
         return redirect(url_for('view_book',bookid=addedItem['_id']))
 
     @app.route('/add', methods=['GET'])
@@ -187,10 +194,10 @@ def create_app():
     @app.route('/view/<bookid>')
     def view_book(bookid):
         try:
-             b = app.get_db().get_book_by_id(bookid)
+             b = app.db.get_book_by_id(bookid)
         except NotFoundError, e:
              return renderErrorPage(message='no element found with id "{}"'.format(bookid), httpCode=404)
-        similar = app.get_db().mlt(bookid)['hits']['hits'][:10]
+        similar = app.db.mlt(bookid)['hits']['hits'][:10]
         return render_template('details.html',
                                book=b['_source'], bookid=bookid,
                                similar=similar)
@@ -198,7 +205,7 @@ def create_app():
     @app.route('/download/<bookid>/<fileid>')
     def download_book(bookid, fileid):
         try:
-            b = app.get_db().get_book_by_id(bookid)
+            b = app.db.get_book_by_id(bookid)
         except NotFoundError, e:
             return renderErrorPage(message='no element found with id "{}"'.format(bookid), httpCode=404)
         if '_files' not in b['_source']:
@@ -206,7 +213,7 @@ def create_app():
         for i,file in enumerate(b['_source']['_files']):
             if file['sha1'] == fileid:
                 try:
-                    app.get_db().increment_download_count(bookid, i)
+                    app.db.increment_download_count(bookid, i)
                 except:
                     app.logger.warn("Cannot increment download count",
                                     exc_info=1)
