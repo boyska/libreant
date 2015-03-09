@@ -229,10 +229,16 @@ def create_app():
     def get_locale():
         return request.accept_languages.best_match(['en', 'it', 'sq'])
 
+    @app.errorhandler(Exception)
+    def handle_generic_exceptions(error):
+        rsp = make_response('Internal server error', 500)
+        app.logger.exception('unhandled exception')
+        return rsp
+
     @app.errorhandler(es_exceptions.ConnectionError)
     def handle_elasticsearch_down(error):
         rsp = make_response('DB connection error', 503)
-        app.logger.error("Error connecting to DB; check your configuration")
+        app.logger.exception("Error connecting to DB; check your configuration")
         return rsp
 
     return app
