@@ -101,7 +101,8 @@ conf = dict(
                   'archivant',
                   'utils',
                   'cli',
-                  'conf'],
+                  'conf',
+                  'romeo'],
         install_requires=[
           'gevent',
           'elasticsearch',
@@ -113,6 +114,9 @@ conf = dict(
           'Fsdb',
           'click'
         ],
+        extras_require={
+            'authentication_htpasswd': ['passlib']
+        },
         package_data = {
           # If any package contains *.mo include them
           # important! leave all the stars!

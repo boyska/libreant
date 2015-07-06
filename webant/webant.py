@@ -17,6 +17,7 @@ from archivant.exceptions import NotFoundException, FileOpNotSupported
 from agherant import agherant
 from api.blueprint_api import api
 from webserver_utils import gevent_run
+import romeo
 
 
 class LibreantCoreApp(Flask):
@@ -50,6 +51,26 @@ class LibreantViewApp(LibreantCoreApp):
         Bootstrap(self)
         self.babel = Babel(self)
         self.available_translations = [l.language for l in self.babel.list_translations()]
+        auth_backends = []
+        if self.config.get('HTPASSWD', None) is not None:
+            auth_backends.append(romeo.HtpasswdWhoisBackend(
+                self.config['HTPASSWD']))
+
+        def get_auth_data():
+            d = {}
+            if request.authorization:
+                d['user'] = request.authorization.username
+                d['password'] = request.authorization.password
+            if 'REMOTE_USER' in request.environ:
+                d['remoteuser'] = request.environ['REMOTE_USER']
+            d['ip'] = request.remote_addr
+            if 'REMOTE_ADDR' in request.environ:
+                d['ip'] = request.environ['REMOTE_ADDR']
+            return d
+        self.auth = romeo.Authenticator(auth_backends,
+                                        self.config.get('USERROLE', None),
+                                        self.config.get('ROLEDEF', None),
+                                        get_auth_data)
 
 
 def create_app(conf={}):
