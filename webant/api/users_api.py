@@ -156,7 +156,7 @@ def get_capability(capID):
     return jsonify({'data':
                       {'id': cap.id,
                        'domain': Capability.regToSim(cap.domain),
-                       'actions': Action.bitmask_to_list(cap.action)}})
+                       'actions': cap.action.to_list()}})
 
 
 @route('/capabilities/<int:capID>', methods=['DELETE'])

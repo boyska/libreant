@@ -43,6 +43,11 @@ class TestCapability(TestBaseClass):
         eq_(usr.capabilities.get(), caps[1])
         eq_(GroupToCapability.select().count(), 1)
 
+    def test_action_creation(self):
+        Action.list_to_bitmask(Action.ACTIONS)
+        with self.assertRaises(ValueError):
+            Action(Action.list_to_bitmask(Action.ACTIONS) + 1)
+
     def test_action_matching(self):
         cap = Capability.create(domain='s',
                                 action=(Action.CREATE | Action.READ | Action.UPDATE))
@@ -109,4 +114,4 @@ class TestCapability(TestBaseClass):
         self.assertFalse(grp.can('users/123', Action.UPDATE))
 
     def test_bitmask(self):
-        self.assertEqual(Action.bitmask_to_list(Action.list_to_bitmask(Action.ACTIONS)), Action.ACTIONS)
+        self.assertEqual(Action.list_to_bitmask(Action.ACTIONS).to_list(), Action.ACTIONS)

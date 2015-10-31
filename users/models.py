@@ -12,6 +12,16 @@ GroupToCapabilityProxy = Proxy()
 UserToGroupProxy = Proxy()
 
 
+class ActionField(IntegerField):
+    db_field = 'action'
+
+    def db_value(self, value):
+        return value
+
+    def python_value(self, value):
+        return Action(value)
+
+
 class BaseModel(Model):
     class Meta:
         database = db_proxy  # Use proxy for our DB.
@@ -35,7 +45,7 @@ class Capability(BaseModel):
     """
 
     domain = CharField()
-    action = IntegerField()
+    action = ActionField()
 
     class Meta:
         indexes = ((('domain', 'action'), True),)
@@ -67,11 +77,11 @@ class Capability(BaseModel):
         return self.match_domain(dom) and self.match_action(act)
 
 
-class Action():
+class Action(int):
     """Actions utiliy class
 
     You can use this class attributes to compose the actions bitmask::
-        bitmask = Action.CREATE | Action.DELETE
+        bitmask = ActionField.CREATE | ActionField.DELETE
 
     The following actions are supported:
      - CREATE
@@ -83,13 +93,17 @@ class Action():
     # the index of the action in the list correspond to the its position in the bitmask
     ACTIONS = ['CREATE', 'READ', 'UPDATE', 'DELETE']
 
-    @classmethod
-    def bitmask_to_list(cls, bitmask):
+    def __new__(cls, bitmask):
+        if bitmask >= 2**len(cls.ACTIONS):
+            raise ValueError('bitmask %d is too big' % bitmask)
+        return super(Action, cls).__new__(cls, bitmask)
+
+    def to_list(self):
         '''convert an actions bitmask into a list of action strings'''
         res = []
-        for a in cls.ACTIONS:
-            aBit = cls.action_bitmask(a)
-            if ((bitmask & aBit) == aBit):
+        for a in self.__class__.ACTIONS:
+            aBit = self.__class__.action_bitmask(a)
+            if ((self & aBit) == aBit):
                 res.append(a)
         return res
 
@@ -99,7 +113,7 @@ class Action():
         bitmask = 0
         for a in actions:
             bitmask |= cls.action_bitmask(a)
-        return bitmask
+        return Action(bitmask)
 
     @classmethod
     def action_bitmask(cls, action):
