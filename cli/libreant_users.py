@@ -11,7 +11,7 @@ conf = dict()
 
 
 @click.group(name="libreant-users", help="manage libreant users")
-@libreant_cli_common()
+@libreant_cli_common(additional_options=['--users-db'])
 def libreant_users(conf={}, **kwargs):
     global usersDB
     usersDB = users.init_db(conf['USERS_DATABASE'],

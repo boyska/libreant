@@ -5,7 +5,9 @@ from cli import libreant_cli_common
 
 
 @click.command(help="launch libreant daemon")
-@libreant_cli_common()
+@libreant_cli_common(additional_options=[
+    '--port', '--address', '--fsdb-path', '--es-indexname', '--es-hosts',
+    '--users-db', '--preset-paths', '--agherant-descriptions'])
 def libreant(conf, **kwargs):
     try:
         main(conf)
