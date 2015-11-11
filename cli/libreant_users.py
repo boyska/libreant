@@ -1,35 +1,18 @@
 import click
-import logging
 import json
 
 import users.api
 import users
 
-from conf import config_utils
-from conf.defaults import get_def_conf, get_help
-from utils.loggers import initLoggers
+from cli import libreant_cli_common
 
 usersDB = None
 conf = dict()
 
 
 @click.group(name="libreant-users", help="manage libreant users")
-@click.version_option()
-@click.option('-s', '--settings', type=click.Path(exists=True, readable=True), help='file from wich load settings')
-@click.option('-d', '--debug', is_flag=True, help=get_help('DEBUG'))
-@click.option('--users-db', type=click.Path(), metavar="<url>", help=get_help('USERS_DATABASE') )
-def libreant_users(debug, settings, users_db):
-    initLoggers(logNames=['config_utils'])
-    global conf
-    conf = config_utils.load_configs('LIBREANT_', defaults=get_def_conf(), path=settings)
-    cliConf = {}
-    if debug:
-        cliConf['DEBUG'] = True
-    if users_db:
-        cliConf['USERS_DATABASE'] = users_db
-    conf.update(cliConf)
-    initLoggers(logging.DEBUG if conf.get('DEBUG', False) else logging.WARNING)
-
+@libreant_cli_common()
+def libreant_users(conf={}, **kwargs):
     global usersDB
     usersDB = users.init_db(conf['USERS_DATABASE'],
                                pwd_salt_size=conf['PWD_SALT_SIZE'],
