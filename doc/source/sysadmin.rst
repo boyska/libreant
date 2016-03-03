@@ -48,6 +48,10 @@ Install libreant and all python dependencies::
     
     ./ve/bin/pip install libreant
 
+ArchLinux has elasticsearch 2, so we need to upgrade its library::
+    
+    ./ve/bin/pip install -U 'elasticsearch>=2'
+
 Execution
 ----------
 
