@@ -1,4 +1,5 @@
 from elasticsearch import NotFoundError
+from elasticsearch import VERSION as elasticsearch_lib_version
 from elasticsearch.helpers import scan
 
 import logging
@@ -87,6 +88,18 @@ class DB(object):
             If `wait_for_ready` is True, this function will block until
             status for `self.index_name` will be `yellow`
         '''
+        server_version = self.es.info()['version']['number']
+        server_major = int(server_version.split('.')[0])
+        lib_major = int(elasticsearch_lib_version[0])
+        if server_major != lib_major:
+            log.error('Elasticsearch has version {} '
+                      'but its library has version {}:'
+                      'the major versions of the two must be'
+                      'the same'.format(server_version,
+                                        '.'.join(str(x) for x in
+                                                 elasticsearch_lib_version))
+                      )
+
         maps = {
             'book': {  # this need to be the document type!
                 # special elasticsearch field
