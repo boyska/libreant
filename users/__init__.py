@@ -104,6 +104,11 @@ def populate_with_defaults():
         anon.save()
 
 
+def deinit_db():
+    '''Make sure that db is not initialized'''
+    db_proxy.obj = None
+
+
 def init_db(dbURL, pwd_salt_size=None, pwd_rounds=None):
     '''Initialize users database
 

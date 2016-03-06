@@ -54,6 +54,7 @@ class LibreantCoreApp(Flask):
                                          pwd_rounds=self.config['PWD_ROUNDS'])
             users.populate_with_defaults()
         else:
+            users.deinit_db()
             self.logger.warning("""It has not been set any value for 'USERS_DATABASE', \
 all operations about users will be unsupported. Are all admins.""")
             self.usersDB = None
