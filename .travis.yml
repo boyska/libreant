@@ -6,11 +6,15 @@ services:
 matrix:
     include:
         - python: "2.7"
-          env: TEST_SUITE=test VERSION_GEVENT=1.0.1
+          env: TEST_SUITE=test NOSE_WHERE=archivant
         - python: "2.7"
-          env: TEST_SUITE=test VERSION_GEVENT=1.0.2
+          env: TEST_SUITE=test NOSE_WHERE=libreantdb
         - python: "2.7"
-          env: TEST_SUITE=test VERSION_GEVENT=1.1.0
+          env: TEST_SUITE=test NOSE_EXCLUDE='^(archivant|libreantdb)' VERSION_GEVENT=1.0.1
+        - python: "2.7"
+          env: TEST_SUITE=test NOSE_EXCLUDE='^(archivant|libreantdb)' VERSION_GEVENT=1.0.2
+        - python: "2.7"
+          env: TEST_SUITE=test NOSE_EXCLUDE='^(archivant|libreantdb)' VERSION_GEVENT=1.1.0
         - python: "2.7"
           env: TEST_SUITE=build_sphinx
         - python: "2.7"
@@ -26,5 +30,5 @@ install:
 
 script:
     - 'if [[ $TEST_SUITE == flake ]]; then flake8; return $?; fi'
-    - 'if [[ $TEST_SUITE == test ]]; then sleep 10 && python setup.py test ; return $?; fi'
+    - 'if [[ $TEST_SUITE == test ]]; then python setup.py test ; return $?; fi'
     - 'if [[ $TEST_SUITE == build_sphinx ]]; then python setup.py build_sphinx; return $?; fi'
