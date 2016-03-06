@@ -187,8 +187,9 @@ def create_app(conf={}):
 
         try:
             preset = app.presetManager.presets[volume['metadata']['_preset']]
-        except KeyError as e:
-            app.logger.exception(e)
+        except KeyError:
+            app.logger.exception("Has been asked to modify a volume \
+with a preset that does not exists any more: '{}'".format(volume['metadata']['_preset']))
             preset = None
 
         return render_template('edit-volume.html',
