@@ -191,10 +191,19 @@ def create_app(conf={}):
             return renderErrorPage(message='no volume found with id "{}"'.format(volumeID), httpCode=404)
 
         try:
-            preset = app.presetManager.presets[volume['metadata']['_preset']]
+            volume_preset = volume['metadata']['_preset']
         except KeyError:
-            app.logger.exception("Has been asked to modify a volume \
-with a preset that does not exists any more: '{}'".format(volume['metadata']['_preset']))
+            volume_preset = None
+
+        if volume_preset is not None:
+            try:
+                preset = app.presetManager.presets[volume_preset]
+            except KeyError:
+                app.logger.exception("Has been asked to modify a volume with a"
+                                    " preset that does not exists anymore: "
+                                    "'{}'".format(volume['metadata']['_preset']))
+                preset = None
+        else:
             preset = None
 
         return render_template('edit-volume.html',
