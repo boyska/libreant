@@ -123,6 +123,9 @@ conf = dict(
           'webant': ['translations/*/*/*.mo']
         },
         include_package_data=True,
+        extras_require={
+            'doc':['sphinx', 'sphinxcontrib-httpdomain>=1.1'],
+        },
         tests_require=['nose', 'coverage'],
         zip_safe=False,
         cmdclass={'build': build,

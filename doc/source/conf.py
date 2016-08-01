@@ -33,6 +33,15 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
 ]
+try:
+    import sphinxcontrib.autohttp.flask
+except ImportError:
+    print "WARNING: sphinxcontrib-httpdomain not installed," \
+        "you will get no REST API doc"
+    print "  You might want to do pip install -U pip && pip install '.[doc]'"
+else:
+    del sphinxcontrib.autohttp.flask
+    extensions += ['sphinxcontrib.autohttp.flask']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
