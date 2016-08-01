@@ -17,6 +17,7 @@ Contents:
    sysadmin
    documentation
    developer
+   httpapi
    api/modules
 
 
