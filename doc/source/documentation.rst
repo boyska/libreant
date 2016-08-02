@@ -27,7 +27,7 @@ which to include all the other pages.
         add its filename to the ``toctree`` in ``index.rst``
 
 To build html documentation from it, you should first of all ``pip install
-Sphinx`` inside your virtualenv. Then you can run ``python setup.py
+'.[doc]'`` inside your virtualenv. If this command fails, you probably have an old pip version: run ``pip install -U pip`` to fix this. Then you can run ``python setup.py
 build_sphinx``. This command will create documentation inside
 ``build/sphinx/html/``. So run ``firefox build/sphinx/html/index.html`` and you
 can read it.
