@@ -2,6 +2,10 @@
 Libreant changelog
 ===================
 
+Next
++++
+- Removed useless dependencies (PR #312)
+
 0.5
 +++
 - Added supoort to Elasticsearch 2.x versions. (PR #281)
