@@ -9,6 +9,7 @@ from elasticsearch.helpers import scan, bulk, reindex
 from .exceptions import MappingsException
 
 import logging
+import six
 log = logging.getLogger(__name__)
 
 
@@ -40,7 +41,7 @@ def validate_book(body):
 
 def collectStrings(leftovers):
     strings = []
-    if isinstance(leftovers, basestring):
+    if isinstance(leftovers, six.string_types):
         return leftovers.split()
     elif isinstance(leftovers, list):
         for l in leftovers:

@@ -14,6 +14,7 @@ from libreantdb import DB
 from .exceptions import NotFoundException, FileOpNotSupported, ConflictException
 
 from logging import getLogger
+import six
 log = getLogger('archivant')
 
 
@@ -305,7 +306,7 @@ class Archivant():
         '''
         res = dict()
 
-        if isinstance(file, basestring) and os.path.isfile(file):
+        if isinstance(file, six.string_types) and os.path.isfile(file):
             res['name'] = metadata['name'] if 'name' in metadata else os.path.basename(file)
             res['size'] = os.path.getsize(file)
             res['sha1'] = calc_file_digest(file, algorithm="sha1")
@@ -361,11 +362,11 @@ class Archivant():
         for k in metadata.keys():
             if k not in modifiable_fields:
                 raise ValueError('Not modifiable field given: {}'.format(k))
-        if 'name' in metadata and not isinstance(metadata['name'], basestring):
+        if 'name' in metadata and not isinstance(metadata['name'], six.string_types):
             raise ValueError("'name' must be a string")
-        if 'mime' in metadata and not isinstance(metadata['mime'], basestring):
+        if 'mime' in metadata and not isinstance(metadata['mime'], six.string_types):
             raise ValueError("'mime' must be a string")
-        if 'notes' in metadata and not isinstance(metadata['notes'], basestring):
+        if 'notes' in metadata and not isinstance(metadata['notes'], six.string_types):
             raise ValueError("'notes' must be a string")
         if 'download_count' in metadata and not isinstance(metadata['download_count'], Integral):
             raise ValueError("'download_count' must be a number")
