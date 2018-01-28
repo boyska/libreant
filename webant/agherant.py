@@ -1,3 +1,4 @@
+from __future__ import print_function
 from logging import getLogger
 from itertools import chain
 
@@ -62,4 +63,4 @@ if __name__ == '__main__':
     results = aggregate(description_list, 'russia')
 
     for result in results:
-        print result.title, result.score
+        print(result.title, result.score)
