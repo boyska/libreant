@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from archivant import Archivant
 from elasticsearch import Elasticsearch
 from tempfile import mkdtemp, mkstemp

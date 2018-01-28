@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from webant.test import WebantTestCase
 from nose.tools import eq_
 

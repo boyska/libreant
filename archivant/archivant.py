@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import os
 from numbers import Integral
 from elasticsearch import Elasticsearch
@@ -6,11 +7,11 @@ from uuid import uuid4
 from fsdb import Fsdb
 from fsdb.hashtools import calc_file_digest, calc_digest
 from copy import deepcopy
-from urlparse import urlparse
+from six.moves.urllib.parse import urlparse
 from json import dumps
 
 from libreantdb import DB
-from exceptions import NotFoundException, FileOpNotSupported, ConflictException
+from .exceptions import NotFoundException, FileOpNotSupported, ConflictException
 
 from logging import getLogger
 log = getLogger('archivant')

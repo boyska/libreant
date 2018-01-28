@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import functools
 from flask import send_file
 

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from webant import create_app
 from conf.defaults import get_def_conf
 

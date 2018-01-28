@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from webant.test import WebantUsersTestCase
 from flask.json import loads, dumps
 

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from passlib.hash import pbkdf2_sha256
 
 defConf = {

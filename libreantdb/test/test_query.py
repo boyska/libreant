@@ -3,6 +3,7 @@ This module will connect to your elasticsearch instance.
 An index will be reserved to the tests.
 '''
 
+from __future__ import absolute_import
 from nose.tools import eq_, with_setup, raises
 
 from libreantdb import api

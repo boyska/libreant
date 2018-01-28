@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import time
 import re
 
@@ -5,7 +6,7 @@ from elasticsearch import NotFoundError, RequestError, TransportError
 from elasticsearch import __version__ as es_version
 from elasticsearch.helpers import scan, bulk, reindex
 
-from exceptions import MappingsException
+from .exceptions import MappingsException
 
 import logging
 log = logging.getLogger(__name__)

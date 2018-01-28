@@ -1,8 +1,9 @@
+from __future__ import absolute_import
 from flask import Blueprint, current_app, jsonify
 from webant.util import add_routes
-from util import ApiError
-from archivant_api import routes as archivantRoutes
-from users_api import routes as usersRoutes
+from .util import ApiError
+from .archivant_api import routes as archivantRoutes
+from .users_api import routes as usersRoutes
 from authbone.authorization import CapabilityMissingException
 
 

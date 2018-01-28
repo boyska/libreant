@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import re
 from peewee import PrimaryKeyField, CharField, ForeignKeyField, IntegerField,\
     Model, Proxy, CompositeKey

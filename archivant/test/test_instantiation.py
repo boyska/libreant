@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from archivant import Archivant
 from archivant.exceptions import FileOpNotSupported
 from tempfile import mkdtemp

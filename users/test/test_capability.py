@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from . import TestBaseClass
 from nose.tools import eq_
 from users import User, Group, GroupToCapability, Capability, Action

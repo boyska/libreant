@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from libreantdb import DB
 from elasticsearch import Elasticsearch
 

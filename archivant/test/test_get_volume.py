@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from archivant.test.class_template import TestArchivant
 from archivant.exceptions import NotFoundException
 from nose.tools import raises, ok_, eq_

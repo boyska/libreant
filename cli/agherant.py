@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import click
 import logging
 
@@ -5,7 +6,7 @@ from . import load_cfg
 from conf.defaults import get_def_conf, get_help
 from utils.loggers import initLoggers
 from webant.agherant_standalone import main
-from custom_types import StringList
+from .custom_types import StringList
 
 
 @click.command(help="launch agherant in standalone mode")

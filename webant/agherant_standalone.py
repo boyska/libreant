@@ -1,9 +1,10 @@
+from __future__ import absolute_import
 from flask import Flask, request
 from flask_bootstrap import Bootstrap
 from flask_babel import Babel
 
-import agherant
-from webserver_utils import gevent_run
+from . import agherant
+from .webserver_utils import gevent_run
 
 
 def create_app(conf):

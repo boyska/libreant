@@ -3,6 +3,7 @@ This module provides some function to make running a webserver a little easier
 '''
 
 
+from __future__ import absolute_import
 def gevent_run(app):
     from gevent.wsgi import WSGIServer
     import gevent.monkey

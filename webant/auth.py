@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from flask import session
 from users.api import get_user, get_anonymous_user, NotFoundException
 from authbone import Authenticator, Authorizator

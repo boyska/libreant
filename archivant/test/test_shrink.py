@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from archivant.test.class_template import TestArchivant
 
 from nose.tools import eq_

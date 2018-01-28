@@ -1,5 +1,6 @@
+from __future__ import absolute_import
 from webant.util import routes_collector
-from util import ApiError, make_success_response, on_json_load_error
+from .util import ApiError, make_success_response, on_json_load_error
 from flask import request, url_for, jsonify
 import users.api
 from users import Action

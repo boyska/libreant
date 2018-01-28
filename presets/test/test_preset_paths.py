@@ -2,6 +2,7 @@
 Collection of tests to verify preset paths loading
 '''
 
+from __future__ import absolute_import
 from nose.tools import raises, eq_
 from tempfile import NamedTemporaryFile, mkdtemp
 from shutil import rmtree

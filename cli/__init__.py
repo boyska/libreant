@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import click
 import sys
 from conf.config_utils import load_configs

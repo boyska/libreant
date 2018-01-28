@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import json
 import tempfile
 import os
@@ -6,7 +7,7 @@ from webant.util import send_attachment_file, routes_collector
 from flask import request, current_app, url_for, jsonify
 from archivant import Archivant
 from archivant.exceptions import NotFoundException
-from util import ApiError, on_json_load_error, make_success_response
+from .util import ApiError, on_json_load_error, make_success_response
 from users import Action
 
 routes = []

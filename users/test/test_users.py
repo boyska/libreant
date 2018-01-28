@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from . import TestBaseClass
 from peewee import IntegrityError
 from nose.tools import eq_, ok_

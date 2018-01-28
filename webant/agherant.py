@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import absolute_import
 from logging import getLogger
 from itertools import chain
 
@@ -7,7 +8,7 @@ from flask import Blueprint, render_template, abort, request, Response, \
 from werkzeug.routing import BuildError
 import opensearch
 
-from util import memoize, requestedFormat
+from .util import memoize, requestedFormat
 
 log = getLogger('agherant')
 agherant = Blueprint('agherant', __name__)

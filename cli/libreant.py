@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import click
 import logging
 import json
@@ -6,7 +7,7 @@ from . import load_cfg, die
 from conf.defaults import get_def_conf, get_help
 from utils.loggers import initLoggers
 from webant.webant import main
-from custom_types import StringList
+from .custom_types import StringList
 
 
 @click.command(help="launch libreant daemon")

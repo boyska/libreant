@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from webant.test.api import WebantTestApiCase, ApiClientError
 import users
 from nose.tools import eq_

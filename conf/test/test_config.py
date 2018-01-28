@@ -4,6 +4,7 @@ This tests are about the configuration system.
 Extensive use of the 'environ' variable is made: this is in order to simulate
 the environment without going into heavy mocking.
 '''
+from __future__ import absolute_import
 from tempfile import mkstemp
 import json
 import os

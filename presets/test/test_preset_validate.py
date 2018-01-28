@@ -2,6 +2,7 @@
 Collection of tests to verify presets validation
 '''
 
+from __future__ import absolute_import
 from nose.tools import raises
 from presets.presetManager import Preset
 from presets.presetManager import PresetMissingFieldException
